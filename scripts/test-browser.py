@@ -36,7 +36,13 @@ def main():
         assert page.evaluate('gameState') == 'paused'
         assert page.evaluate('JSON.stringify([...raceTasks].map(t=>t.remaining))') == before
         page.get_by_role('button', name='Resume', exact=True).click()
-        page.wait_for_function("gameState==='racing'", timeout=10000)
+        # The simulation caps each frame at 50 ms. A software-rendered CI
+        # machine can take longer in wall time for the real countdown to run.
+        try:
+            page.wait_for_function("gameState==='racing'", timeout=60000, polling=100)
+        except Exception:
+            print('Countdown diagnostics:', page.evaluate("({state:gameState,remaining:[...raceTasks].map(t=>t.remaining),frames:renderer.info.render.frame,hidden:document.hidden,focused:document.hasFocus()})"), flush=True)
+            raise
         page.keyboard.press('Escape');assert page.evaluate('gameState') == 'paused'
         page.keyboard.press('Escape');assert page.evaluate('gameState') == 'racing'
         page.get_by_role('button', name='Sound off', exact=True).click()
