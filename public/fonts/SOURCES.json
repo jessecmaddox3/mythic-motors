@@ -1,0 +1,32 @@
+[
+  {
+    "file": "bungee-latin.woff2",
+    "url": "https://fonts.gstatic.com/s/bungee/v17/N0bU2SZBIuF2PU_0DXR1.woff2",
+    "sha256": "126eec706b7931682dbcf6c6efc274132c603f181fbf912678e6cfeb341e721b",
+    "license": "SIL OFL 1.1"
+  },
+  {
+    "file": "bungee-shade-latin.woff2",
+    "url": "https://fonts.gstatic.com/s/bungeeshade/v17/DtVkJxarWL0t2KdzK3oI_jkc6SjT.woff2",
+    "sha256": "5ac7452cbe7996c88c84998b86227ffbee8afb7ab5bd0b2b2512229dcac7e315",
+    "license": "SIL OFL 1.1"
+  },
+  {
+    "file": "chakra-petch-regular-latin.woff2",
+    "url": "https://fonts.gstatic.com/s/chakrapetch/v13/cIf6MapbsEk7TDLdtEz1BwkWn6pg.woff2",
+    "sha256": "7d75be85dd1627e27ec151e9a3701e661bc4f8c2a93611bdd92f3a05d6bbd942",
+    "license": "SIL OFL 1.1"
+  },
+  {
+    "file": "chakra-petch-semibold-latin.woff2",
+    "url": "https://fonts.gstatic.com/s/chakrapetch/v13/cIflMapbsEk7TDLdtEz1BwkeQI51R5_F.woff2",
+    "sha256": "a5888696e9eb1b4bbbecc8eb3922b8369f49d4bddb72263e033cbd17f399be76",
+    "license": "SIL OFL 1.1"
+  },
+  {
+    "file": "chakra-petch-bold-latin.woff2",
+    "url": "https://fonts.gstatic.com/s/chakrapetch/v13/cIflMapbsEk7TDLdtEz1BwkeJI91R5_F.woff2",
+    "sha256": "ce5095dc1cb200aaa939e38067a0677018d10e9f26ec38cdcf1557ac524fc775",
+    "license": "SIL OFL 1.1"
+  }
+]

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mythic Motors 3D</title>
+<link rel="stylesheet" href="./game.css">
+<meta name="description" content="Four fantastical tracks, five trucks and three rivals. A complete free browser racing game you can play offline and make your own.">
+</head>
+<body>
+<div id="ui">
+  <div class="utility"><button id="pauseButton" class="btn small" onclick="pauseRace()" hidden>Pause</button><button id="soundButton" class="btn small" onclick="toggleSound()" aria-pressed="true">Sound on</button></div>
+  <dialog id="pauseScreen" aria-labelledby="pauseTitle"><h2 id="pauseTitle">Race paused</h2><p>Your race waits here. Resume when you are ready.</p><button class="btn" onclick="resumeRace()">Resume</button><button class="btn small" onclick="showTitle()">Back to menu</button></dialog>
+  <section id="graphicsError" hidden><h1>Graphics unavailable</h1><p>This game needs a browser with WebGL enabled. Try a current Chrome, Firefox, Edge or Safari browser with hardware acceleration turned on.</p><p>If graphics stopped during a race, reload to start again.</p><button class="btn" onclick="location.reload()">Reload game</button><a class="back-link" href="https://github.com/jessecmaddox3/mythic-motors">Setup help and source</a></section>
+  <div id="titleScreen" class="screen" style="display:flex">
+    <h1>Mythic Motors</h1>
+    <h2>3D Rally</h2>
+    <h3>4 TRACKS · 5 TRUCKS · 3 RIVALS · JET POWER</h3>
+    <button class="btn" onclick="showTrackSelect()">RACE</button>
+    <a class="back-link" href="https://github.com/jessecmaddox3/mythic-motors">About this game &amp; source</a>
+    <a class="back-link" href="./credits.html">Credits and licenses</a>
+  </div>
+  <div id="trackScreen" class="screen">
+    <h2>Select Track</h2>
+    <div class="track-grid" id="trackGrid"></div>
+    <button class="btn small" onclick="showTitle()">Back</button>
+  </div>
+  <div id="selectScreen" class="screen">
+    <h2>Choose Your Truck</h2>
+    <div style="font-family:'Bungee',cursive;font-size:11px;color:#88ccaa;margin-bottom:6px">Rival Difficulty</div>
+    <div class="diff-row">
+      <button type="button" class="diff-btn active" id="diff0" onclick="setDifficulty(0)" style="border-color:#44cc66;color:#44cc66" aria-pressed="true">Easy</button>
+      <button type="button" class="diff-btn" id="diff1" onclick="setDifficulty(1)" aria-pressed="false">Medium</button>
+      <button type="button" class="diff-btn" id="diff2" onclick="setDifficulty(2)" aria-pressed="false">Hard</button>
+    </div>
+    <div class="truck-grid" id="truckGrid"></div>
+    <button class="btn small" style="margin-top:12px" onclick="showTrackSelect()">Back</button>
+  </div>
+  <div id="hud">
+    <div class="hud-row">
+      <div class="hud-item" id="hudTime">0:00.0</div>
+      <div class="hud-item" id="hudSpeed">0 mph</div>
+    </div>
+    <div class="hud-row" style="margin-top:2px">
+      <div class="hud-item" id="hudProgress" style="font-size:11px;color:#88ccaa">0%</div>
+      <div class="hud-item" id="hudLap" style="font-size:11px;color:#ffcc44"></div>
+    </div>
+    <canvas id="minimap" width="128" height="128"></canvas>
+    <div id="opponentHUD"><div id="racePosition">1st</div><div id="opponentGap"></div></div>
+    <div id="barContainer">
+      <div class="bar-wrap boost"><div class="bar-fill boost" id="boostFill" style="width:100%"></div></div>
+      <div class="bar-wrap jump"><div class="bar-fill jump" id="jumpFill" style="width:100%"></div></div>
+    </div>
+    <div id="powerUpHUD"><div id="powerUpIcon" onclick="activatePowerUp()"></div><div id="powerUpName"></div></div>
+    <div class="controls-hint" id="controlsHint">← → Steer · ↑ Gas · ↓ Brake · SPACE Jump · SHIFT Boost · Power-ups fire automatically · ESC Pause</div>
+  </div>
+  <div id="countdown"></div>
+  <div id="lapFlash"></div>
+  <div id="results" class="screen">
+    <h2>Race Complete!</h2>
+    <div class="result-stars" id="resultStars"></div>
+    <div class="result-stats" id="resultStats"></div>
+    <div class="unlock-msg" id="unlockMsg"></div>
+    <button class="btn" onclick="showTrackSelect()" style="margin-bottom:6px">Race Again</button>
+    <button class="btn small" onclick="showTitle()">Menu</button>
+  </div>
+  <div id="mobileControls">
+    <div class="mobile-left">
+      <button type="button" class="mobile-btn" id="btnLeft" aria-label="Steer left">◄</button>
+      <button type="button" class="mobile-btn" id="btnRight" aria-label="Steer right">►</button>
+    </div>
+    <div class="mobile-right">
+      <button type="button" class="mobile-btn" id="btnJump" aria-label="Jump" style="border-color:rgba(68,170,255,.5);color:#44aaff">JMP</button>
+      <button type="button" class="mobile-btn" id="btnBrake" aria-label="Brake" style="border-color:rgba(255,204,68,.5);color:#ffcc44">BRK</button>
+      <button type="button" class="mobile-btn" id="btnBoost" aria-label="Boost" style="border-color:rgba(255,170,0,.5);color:#ffaa00">🔥</button>
+      <button type="button" class="mobile-btn" id="btnGas" aria-label="Accelerate" style="border-color:rgba(255,204,68,.5);color:#ffcc44">▲</button>
+    </div>
+  </div>
+  <div id="effectOverlay"></div>
+  <div id="edgeWarn"></div>
+  <div id="speedVignette"></div>
+  <div id="trackNameHUD"></div>
+  <div id="powerUpPopup"><div class="pu-icon" id="puPopIcon"></div><div class="pu-name" id="puPopName"></div></div>
+  <div id="chasmWarn">⚠️ CHASM AHEAD!<br><span style="font-size:.6em">BUILD SPEED!</span></div>
+</div>
+<script src="./vendor/three-r128.min.js"></script>
+<script src="./game.js"></script>
+<script>bootGame();</script>
+<noscript><p>This game needs JavaScript enabled. The downloaded file includes everything required to race offline.</p></noscript>
+</body>
+</html>
